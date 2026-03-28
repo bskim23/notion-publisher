@@ -31,6 +31,7 @@ from config import (
     CHANNELS_PROPERTY,
     NAVER_URL_PROPERTY,
     IMWEB_URL_PROPERTY,
+    FACEBOOK_URL_PROPERTY,
     STIBEE_CAMPAIGN_ID_PROPERTY,
     RESERVED_AT_PROPERTY,
     ERROR_LOG_PROPERTY,
@@ -219,6 +220,8 @@ def _update_notion_results(page_id: str, mode: str, results: dict):
         errors.append(f"스티비: {stibee['error']}")
 
     facebook = results.get("facebook") or {}
+    if facebook.get("url"):
+        updates[FACEBOOK_URL_PROPERTY] = facebook["url"]
     if facebook.get("error"):
         errors.append(f"페이스북: {facebook['error']}")
 
@@ -275,10 +278,15 @@ def process_page(page: dict, mode_override: str | None = None) -> dict:
 
     if channels["facebook"]:
         fb_page_id, fb_token = _build_facebook_target(mode)
-        results["facebook"] = _normalize_result(
+        fb_result = _normalize_result(
             post_to_facebook(title=title, naver_blog_url=naver_url or "", fb_quote=fb_quote, page_id=fb_page_id, access_token=fb_token),
             url_key="post_id",
         )
+        # post_id (예: "179944182094039_1234567890") → 페이스북 URL 변환
+        post_id = fb_result.get("post_id")
+        if post_id:
+            fb_result["url"] = f"https://www.facebook.com/{post_id}"
+        results["facebook"] = fb_result
     if channels["imweb"]:
         _log("  🌐 아임웹 실행")
         results["imweb"] = _normalize_result(post_to_imweb(imweb_payload))

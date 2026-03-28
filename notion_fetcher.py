@@ -21,6 +21,7 @@ from config import (
     CHANNELS_PROPERTY,
     NAVER_URL_PROPERTY,
     IMWEB_URL_PROPERTY,
+    FACEBOOK_URL_PROPERTY,
     STIBEE_CAMPAIGN_ID_PROPERTY,
     RESERVED_AT_PROPERTY,
     ERROR_LOG_PROPERTY,
@@ -328,7 +329,7 @@ def update_page_properties(page_id: str, properties: dict[str, Any]) -> bool:
 
         if name in {STATUS_PROPERTY, MODE_PROPERTY}:
             payload_props[name] = {"select": {"name": value}}
-        elif name in {NAVER_URL_PROPERTY, IMWEB_URL_PROPERTY}:
+        elif name in {NAVER_URL_PROPERTY, IMWEB_URL_PROPERTY, FACEBOOK_URL_PROPERTY}:
             payload_props[name] = {"url": value}
         elif name == STIBEE_CAMPAIGN_ID_PROPERTY:
             payload_props[name] = {"rich_text": [{"type": "text", "text": {"content": str(value)}}]}
