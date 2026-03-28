@@ -1,0 +1,6 @@
+# 노션 자동 발행 시스템 의존성
+requests==2.31.0
+python-dotenv==1.0.1
+schedule==1.2.1
+playwright==1.40.0
+cryptography>=41.0.0

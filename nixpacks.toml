@@ -1,0 +1,32 @@
+[phases.setup]
+nixPkgs = [
+  "python311",
+  "nix-ld",
+  "nss",
+  "nspr",
+  "atk",
+  "at-spi2-atk",
+  "at-spi2-core",
+  "cups",
+  "libdrm",
+  "xorg.libxcb",
+  "xorg.libXcomposite",
+  "xorg.libXdamage",
+  "xorg.libXrandr",
+  "xorg.libXcursor",
+  "xorg.libXi",
+  "xorg.libX11",
+  "xorg.libXext",
+  "xorg.libXfixes",
+  "mesa",
+  "alsa-lib",
+  "pango",
+  "cairo",
+  "glib",
+  "dbus",
+]
+
+[phases.build]
+cmds = [
+  "python -m playwright install chromium"
+]

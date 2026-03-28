@@ -1,0 +1,29 @@
+# 환경변수 (절대 커밋 금지!)
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# 임시 파일
+*.png
+*.jpg
+/tmp/
+
+# 가상환경
+venv/
+
+# 스티비 세션 캐시
+stibee_session.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+worker.log
