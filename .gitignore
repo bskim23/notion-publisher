@@ -27,3 +27,4 @@ stibee_session.json
 .idea/
 *.swp
 worker.log
+worker.err.log
