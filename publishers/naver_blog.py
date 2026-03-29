@@ -367,6 +367,9 @@ def _input_tags(page, tags: list[str]) -> None:
                     time.sleep(0.3)
                 except Exception:
                     break
+            # fallback 후 드롭다운/포커스 정리
+            page.keyboard.press("Escape")
+            time.sleep(0.5)
             print(f"    태그 입력 완료 (fallback): {', '.join(tags)}")
         else:
             print(f"  ⚠️ 태그 input을 찾지 못함 - 태그 없이 발행 진행")
@@ -638,9 +641,9 @@ def _add_image_link(page, link_url: str) -> bool:
 
 def _select_thumbnail(page) -> None:
     """
-    에디터 본문의 두 번째 이미지(기사 고유 이미지)를 대표 이미지로 설정.
+    에디터 본문의 첫 번째 이미지(기사 고유 이미지)를 대표 이미지로 설정.
     발행 패널 열기 전에 호출. 이미지 hover → 이미지 클릭.
-    삽입 순서: 헤더 배너(0) → 기사 이미지(1) → 액션 배너(2)
+    삽입 순서: 기사 이미지(0) → 헤더 배너(1) → ...
     """
     time.sleep(0.5)
 
@@ -649,19 +652,19 @@ def _select_thumbnail(page) -> None:
     count = image_components.count()
     print(f"    [THUMB] 에디터 이미지 수: {count}")
 
-    if count < 2:
-        print("  ⚠️ 대표 이미지 선택 실패 (이미지 2개 미만)")
+    if count < 1:
+        print("  ⚠️ 대표 이미지 선택 실패 (이미지 없음)")
         return
 
-    # 두 번째 이미지(index=1) = 기사 고유 이미지
-    target = image_components.nth(1)
+    # 첫 번째 이미지(index=0) = 기사 고유 이미지 (섹션 순서 변경 후)
+    target = image_components.nth(0)
     target.hover(timeout=3000)
     time.sleep(0.7)
 
-    # 두 번째 이미지 클릭 = 대표 이미지 설정
+    # 첫 번째 이미지 클릭 = 대표 이미지 설정
     try:
         target.click(force=True)
-        print(f"    ✅ 대표 이미지 설정 완료 (두 번째 이미지 클릭)")
+        print(f"    ✅ 대표 이미지 설정 완료 (index=0)")
     except Exception as e:
         print(f"  ⚠️ 대표 이미지 클릭 실패: {e}")
 
@@ -758,7 +761,8 @@ def _write_post(page, payload: dict) -> str | None:
 
     time.sleep(1)
 
-    # 대표 이미지: 기사 이미지를 첫 번째로 삽입하여 자동 선택됨
+    # 대표 이미지: 첫 번째 이미지(기사 이미지)를 대표로 설정 + 에디터 포커스 리셋
+    _select_thumbnail(page)
 
     # ── 발행 패널 열기 ───────────────────────────────────
     try:
