@@ -886,7 +886,7 @@ def _write_post(page, payload: dict) -> str | None:
     try:
         page.wait_for_url(
             lambda url: "PostWriteForm" not in url,
-            timeout=20_000,
+            timeout=30_000,
         )
     except PWTimeout:
         pass
@@ -896,16 +896,31 @@ def _write_post(page, payload: dict) -> str | None:
     print(f"    발행 후 URL: {current_url[:120]}")
 
     if "PostWriteForm" in current_url:
-        # 발행은 됐을 수 있으나 URL 이동 안 됨 → 최근 글 URL로 추정
+        # 발행은 됐을 수 있으나 URL 이동 안 됨 → 블로그 홈에서 최신 글 URL 추출
         try:
             page.goto(f"https://blog.naver.com/{NAVER_BLOG_ID}", wait_until="domcontentloaded", timeout=15000)
-            first_link = page.locator("a[href*='blog.naver.com'][href*='/']").first
-            guessed_url = first_link.get_attribute("href") if first_link.count() > 0 else None
-            if guessed_url and NAVER_BLOG_ID in guessed_url:
-                print(f"  ⚠️ 발행 완료 추정 (최신 글 URL): {guessed_url}")
-                return guessed_url
-        except Exception:
-            pass
+            time.sleep(2)
+            # JS로 blogId/숫자 패턴 링크 중 logNo 최대값 (= 최신 글) 추출
+            guessed_url = page.evaluate(f"""
+                () => {{
+                    const links = Array.from(document.querySelectorAll('a[href]'))
+                        .map(a => a.href)
+                        .filter(h => /blog\\.naver\\.com\\/{NAVER_BLOG_ID}\\/\\d{{5,}}/.test(h));
+                    if (!links.length) return null;
+                    return links.reduce((best, url) => {{
+                        const m = url.match(/\\/(\d+)(?:[?#].*)?$/);
+                        const bm = best ? best.match(/\\/(\d+)(?:[?#].*)?$/) : null;
+                        return (!bm || (m && parseInt(m[1]) > parseInt(bm[1]))) ? url : best;
+                    }}, null);
+                }}
+            """)
+            if guessed_url:
+                # 쿼리스트링 제거 후 정규화
+                clean_url = guessed_url.split("?")[0].split("#")[0]
+                print(f"  ⚠️ 발행 완료 추정 (최신 글 URL): {clean_url}")
+                return clean_url
+        except Exception as e:
+            print(f"  ⚠️ 폴백 URL 추출 오류: {e}")
         print(f"  ⚠️ 발행 후 URL 확인 불가")
         return None
 
