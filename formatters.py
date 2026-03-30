@@ -125,7 +125,7 @@ def _extract_source_link(
     if source_link_url:
         cleaned = [
             p for p in paragraphs
-            if "원문기사 전체보기" not in p and not _URL_RE.fullmatch(p.strip())
+            if "관련기사 전문보기" not in p and not _URL_RE.fullmatch(p.strip())
         ]
         return source_link_url.strip(), cleaned
 
@@ -134,7 +134,7 @@ def _extract_source_link(
         if href.startswith("http"):
             cleaned = []
             for p in paragraphs:
-                if "원문기사 전체보기" in p:
+                if "관련기사 전문보기" in p:
                     continue
                 if href in p:
                     continue
@@ -147,13 +147,13 @@ def _extract_source_link(
         url_match = _URL_RE.search(p)
         if url_match and not found_url:
             found_url = url_match.group(0).strip()
-            if "원문기사 전체보기" in p or p.strip() == found_url:
+            if "관련기사 전문보기" in p or p.strip() == found_url:
                 continue
             p = p.replace(found_url, "").strip()
             if p:
                 cleaned.append(p)
             continue
-        if "원문기사 전체보기" in p:
+        if "관련기사 전문보기" in p:
             continue
         cleaned.append(p)
 
@@ -308,7 +308,7 @@ def format_for_naver_blog(
         part1_lines.append(_p(p))          # align=left 기본
     if source_url:
         part1_lines.append(
-            _p(f'<a href="{source_url}" target="_blank">👉 원문기사 전체보기</a>')
+            _p(f'<a href="{source_url}" target="_blank">👉 관련기사 전문보기</a>')
         )
     if part1_lines:
         sections.append({"type": "html", "content": "\n".join(part1_lines)})
@@ -456,7 +456,7 @@ def format_for_imweb(
     # ── 빈 줄 + 원문 링크 ──
     if source_url:
         parts.append(_BR)
-        link_html = f'<a href="{source_url}">👉 원문기사 전체보기</a>'
+        link_html = f'<a href="{source_url}">👉 관련기사 전문보기</a>'
         parts.append(f"<p>{_span(link_html)}</p>")
 
     # ── 기사 고유 이미지 ──
@@ -577,7 +577,7 @@ def format_for_stibee(
         news_image_url="",
         body_paragraph_1=body_1_html,
         source_link_url=extracted_source_link_url,
-        source_link_text="👉 원문기사 전체보기",
+        source_link_text="👉 관련기사 전문보기",
         middle_image_url=hero_image_url,
         body_paragraph_2=body_2_html,
         action_points=tips or [],

@@ -204,7 +204,7 @@ def build_tikkeul_html(
     news_image_url: str = "",
     body_paragraph_1: str = "",
     source_link_url: str = "",
-    source_link_text: str = "👉 원문기사 전체보기",
+    source_link_text: str = "👉 관련기사 전문보기",
     middle_image_url: str = "",
     body_paragraph_2: str = "",
     action_points: list[dict] = None,
