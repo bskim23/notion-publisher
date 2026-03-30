@@ -361,6 +361,9 @@ def run_polling():
     _log(f"   트리거 상태: {STATUS_TEST_REQUEST}, {STATUS_PROD_REQUEST}")
     _log("   종료: Ctrl+C\n")
 
+    # 시작 즉시 1회 실행 후 스케줄 진입
+    check_and_publish()
+
     while True:
         interval = _get_poll_interval()
         if interval is None:
