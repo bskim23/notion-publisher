@@ -127,9 +127,11 @@ def get_fb_quote(page: dict) -> str:
 
 
 def get_page_tags(page: dict) -> list[str] | None:
-    """태그 속성(Multi-select) 값을 반환합니다. 비어있으면 None."""
-    tags = get_multi_select_values(page, TAGS_PROPERTY)
-    return tags if tags else None
+    """태그 속성(Rich Text, 쉼표 구분) 값을 반환합니다. 비어있으면 None."""
+    raw = get_rich_text_value(page, TAGS_PROPERTY)
+    if not raw.strip():
+        return None
+    return [t.strip() for t in raw.split(",") if t.strip()]
 
 
 def get_page_mode(page: dict) -> str | None:
