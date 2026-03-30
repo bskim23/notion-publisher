@@ -268,7 +268,7 @@ def format_for_naver_blog(
     sections: [{"type": "html"|"image", "content"|"url": ...}, ...]
     순서: 헤더배너 → 날짜+본문1 → 기사이미지 → 본문2 → 액션배너 → 팁 → 마무리
     """
-    from publishers.tikkeul_template import HEADER_BANNER_SRC, ACTION_BANNER_SRC, FOOTER_BANNER_LOCAL
+    from publishers.tikkeul_template import HEADER_BANNER_SRC, ACTION_BANNER_SRC, FOOTER_BANNER_LOCAL, HEADER_BANNER_LOCAL, ACTION_BANNER_LOCAL
 
     paragraphs = _html_to_paragraphs(html_content)
     paragraphs = _filter_fixed(paragraphs)
@@ -310,8 +310,8 @@ def format_for_naver_blog(
     if part1_lines:
         sections.append({"type": "html", "content": "\n".join(part1_lines)})
 
-    # [2] 헤더 배너
-    sections.append({"type": "image", "url": HEADER_BANNER_SRC})
+    # [2] 헤더 배너 (로컬 파일)
+    sections.append({"type": "local_file", "path": HEADER_BANNER_LOCAL})
 
     # [3] 본문2 (헤더 배너 직후 → 여백 없이 바로 이어붙임)
     if body_2_ps:
@@ -319,7 +319,7 @@ def format_for_naver_blog(
 
     # [4] 액션 배너 (Tips 헤더 이미지) + 팁 (블릿 포인트, 팁 사이 한 줄)
     if tips:
-        sections.append({"type": "image", "url": ACTION_BANNER_SRC})
+        sections.append({"type": "local_file", "path": ACTION_BANNER_LOCAL})
         tip_parts = []
         for tip in tips:
             t = tip.get("title", "")

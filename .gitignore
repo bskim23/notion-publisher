@@ -16,6 +16,10 @@ build/
 *.jpg
 /tmp/
 
+# assets 폴더의 배너 이미지는 예외
+!assets/*.jpg
+!assets/*.png
+
 # 가상환경
 venv/
 

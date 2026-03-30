@@ -347,17 +347,17 @@ def run_once(page_id: str | None = None, mode: str | None = None):
 def _get_poll_interval() -> int | None:
     """현재 KST 시각에 따라 폴링 간격(초) 반환. None이면 중지 시간대."""
     hour = datetime.now(KST).hour
-    if 10 <= hour < 18:
-        return 600       # 오전 10시 ~ 오후 6시: 10분
-    elif 18 <= hour < 22:
-        return 3600      # 오후 6시 ~ 오후 10시: 1시간
+    if 10 <= hour < 19:
+        return 60        # 오전 10시 ~ 오후 7시: 1분
+    elif 19 <= hour < 22:
+        return 600       # 오후 7시 ~ 오후 10시: 10분
     else:
         return None       # 오후 10시 ~ 오전 10시: 중지
 
 
 def run_polling():
     _log("🚀 발행 시스템 시작")
-    _log(f"   10:00~18:00 → 10분 | 18:00~22:00 → 1시간 | 22:00~10:00 → 중지")
+    _log(f"   10:00~19:00 → 1분 | 19:00~22:00 → 10분 | 22:00~10:00 → 중지")
     _log(f"   트리거 상태: {STATUS_TEST_REQUEST}, {STATUS_PROD_REQUEST}")
     _log("   종료: Ctrl+C\n")
 

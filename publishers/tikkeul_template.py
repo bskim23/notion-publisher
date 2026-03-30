@@ -105,13 +105,19 @@ def _make_divider_block() -> str:
 
 # ── 고정 블록 (원본에서 추출) ──────────────────────────────
 
-# 블록 0: 헤더 배너 이미지 (매호 동일)
-HEADER_BANNER_SRC = "https://img2.stibee.com/16538_3197287_1768977951595362040.jpg"
+# 블록 0: 헤더 배너 이미지 (매호 동일 - 로컬 파일)
+HEADER_BANNER_SRC = "https://img2.stibee.com/16538_3197287_1768977951595362040.jpg"  # 스티비용
+HEADER_BANNER_LOCAL = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "..", "assets", "header_banner.jpg"
+)
 
-# 블록 8: 액션 배너 이미지 (매호 동일)
-ACTION_BANNER_SRC = "https://img2.stibee.com/16538_3195206_1768895808348307541.jpg"
+# 블록 8: 액션 배너 이미지 (매호 동일 - 로컬 파일)
+ACTION_BANNER_SRC = "https://img2.stibee.com/16538_3195206_1768895808348307541.jpg"  # 스티비용
+ACTION_BANNER_LOCAL = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "..", "assets", "action_banner.jpg"
+)
 
-# 푸터 구독 배너 이미지 (로컬 파일 - 하드코딩)
+# 푸터 구독 배너 이미지 (로컬 파일)
 FOOTER_BANNER_LOCAL = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "..", "assets", "footer_banner.jpg"
 )
