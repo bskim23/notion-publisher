@@ -27,6 +27,7 @@ from config import (
     ERROR_LOG_PROPERTY,
     TEST_CONFIRMED_PROPERTY,
     FB_QUOTE_PROPERTY,
+    TAGS_PROPERTY,
 )
 
 HEADERS = {
@@ -123,6 +124,12 @@ def get_rich_text_value(page: dict, prop_name: str) -> str:
 def get_fb_quote(page: dict) -> str:
     """페이스북 인용구(fb_quote) 속성값을 반환합니다."""
     return get_rich_text_value(page, FB_QUOTE_PROPERTY)
+
+
+def get_page_tags(page: dict) -> list[str] | None:
+    """태그 속성(Multi-select) 값을 반환합니다. 비어있으면 None."""
+    tags = get_multi_select_values(page, TAGS_PROPERTY)
+    return tags if tags else None
 
 
 def get_page_mode(page: dict) -> str | None:

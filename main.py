@@ -53,6 +53,7 @@ from notion_fetcher import (
     get_page_mode,
     get_page_channels,
     get_fb_quote,
+    get_page_tags,
     get_page_blocks,
     blocks_to_html,
     blocks_to_plain_text,
@@ -244,6 +245,7 @@ def process_page(page: dict, mode_override: str | None = None) -> dict:
     page_id = page["id"]
     title = get_page_title(page)
     fb_quote = get_fb_quote(page)
+    notion_tags = get_page_tags(page)
     mode = _infer_mode(page, mode_override)
     channels = _resolve_channels(page)
 
@@ -256,7 +258,7 @@ def process_page(page: dict, mode_override: str | None = None) -> dict:
     image_urls = get_image_urls(blocks)
     _log(f"   콘텐츠 파싱 완료 | 이미지 {len(image_urls)}장")
 
-    naver_payload = format_for_naver_blog(title, html_content, image_urls)
+    naver_payload = format_for_naver_blog(title, html_content, image_urls, tags=notion_tags)
     imweb_payload = format_for_imweb(title, html_content, image_urls)
     stibee_payload = _build_stibee_payload(title, html_content, image_urls, mode)
 

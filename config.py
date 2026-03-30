@@ -55,6 +55,7 @@ ERROR_LOG_PROPERTY = "에러로그"
 REVIEWER_PROPERTY = "검수자"
 TEST_CONFIRMED_PROPERTY = "테스트확인"
 FB_QUOTE_PROPERTY = "fb_quote"
+TAGS_PROPERTY = "태그"
 
 # 노션 발행 상태
 STATUS_DRAFT = "작성중"
