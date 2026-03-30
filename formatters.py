@@ -11,7 +11,10 @@ _DATE_RE = re.compile(r"^\d{4}\.\d{2}\.\d{2}\.?\s*[가-힣]+요일$")
 _URL_RE = re.compile(r"https?://[^\s<>\"]+")
 
 # 팁 섹션 헤더 패턴
-_TIP_HEADERS = {"티끌 마케팅 Tips", "📌 티끌 마케팅 Tips", "오늘의 티끌 마케팅 Tips", "티끌마케팅 Tips"}
+_TIP_HEADERS = {
+    "티끌 마케팅 Tips", "📌 티끌 마케팅 Tips", "오늘의 티끌 마케팅 Tips", "티끌마케팅 Tips",
+    "티끌 마케팅 팁", "📌 티끌 마케팅 팁", "오늘의 티끌 마케팅 팁", "티끌마케팅 팁",
+}
 
 # 발행 후 제거할 고정 문구 (팁 헤더는 포함하지 않음 — _extract_tips_and_closing이 처리)
 _CLOSING_EXCLUDE = {
@@ -196,7 +199,7 @@ def _extract_tips_and_closing(paragraphs: list[str]) -> tuple[list[dict], str, l
     header_idx = -1
     for i, p in enumerate(paragraphs):
         clean = p.strip().lstrip("📌# *").strip()
-        if clean in _TIP_HEADERS or re.sub(r"\s", "", clean) in {"티끌마케팅Tips", "티끌마케팅Tip"}:
+        if clean in _TIP_HEADERS or re.sub(r"\s", "", clean) in {"티끌마케팅Tips", "티끌마케팅Tip", "티끌마케팅팁"}:
             header_idx = i
             break
 
