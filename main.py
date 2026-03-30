@@ -79,8 +79,8 @@ DEFAULT_CHANNELS = {"naver": True, "imweb": True, "facebook": True, "stibee": Tr
 
 
 def _log(msg: str):
-    ts = datetime.now().strftime("%H:%M:%S")
-    print(f"[{ts}] {msg}")
+    ts = datetime.now(KST).strftime("%H:%M:%S")
+    print(f"[{ts}] {msg}", flush=True)
 
 
 
