@@ -30,10 +30,10 @@ NAVER_PW = os.getenv("NAVER_PW", "")
 CHAT_ID = "8677699069"
 CHROME_DIR = Path.home() / "Library" / "Application Support" / "Google" / "Chrome"
 
-# Telegram bot token
-_tg_config = Path.home() / ".claude-tg-bridge" / "config.json"
-with open(_tg_config) as f:
-    BOT_TOKEN = json.load(f)["bot_token"]
+# Telegram bot token — 미니(OpenClaw default) 봇 사용
+_oc_config = Path.home() / ".openclaw" / "openclaw.json"
+with open(_oc_config) as f:
+    BOT_TOKEN = json.load(f)["channels"]["telegram"]["accounts"]["default"]["botToken"]
 
 
 def _send_telegram(text: str):
@@ -140,7 +140,8 @@ def run():
         # CAPTCHA 또는 추가 인증 필요
         print("  ⚠️ 추가 인증 필요 — 스크린샷 캡처 중...")
         ss_path = tempfile.mktemp(suffix=".png")
-        page.screenshot(path=ss_path)
+        page.set_viewport_size({"width": 1280, "height": 900})
+        page.screenshot(path=ss_path, full_page=True)
 
         _send_telegram_photo(
             ss_path,
