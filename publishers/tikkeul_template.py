@@ -227,12 +227,6 @@ def build_tikkeul_html(
     Returns:
         완성된 HTML 문자열
     """
-    # 날짜 자동 생성
-    if not date_str:
-        weekdays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"]
-        now = datetime.now(KST)
-        date_str = f"{now.strftime('%Y.%m.%d.')} {weekdays[now.weekday()]}"
-
     blocks = []
 
     # 프리헤더 (숨김 텍스트)
@@ -250,13 +244,7 @@ def build_tikkeul_html(
     # [1] 구분선 (고정)
     blocks.append(_wrap_block(_make_divider_block()))
 
-    # [2] 날짜 (가변)
-    date_html = (
-        f'<div style="text-align: center;">'
-        f'<span style="text-decoration: underline; font-size: 12px;" class="stb-underline">'
-        f'<span style="font-weight: bold;" class="stb-bold">{date_str}</span></span></div>'
-    )
-    blocks.append(_wrap_block(_make_text_block(date_html, text_align="center")))
+    # [2] 날짜 블록 제거됨
 
     # [3] 뉴스 이미지 (가변)
     if news_image_url:

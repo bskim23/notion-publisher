@@ -299,11 +299,10 @@ def format_for_naver_blog(
     if image_urls:
         sections.append({"type": "image", "url": image_urls[0]})
 
-    # [1] 날짜(가운데) + 구분선 + 본문1(왼쪽)
+    # [1] 본문1(왼쪽) — 날짜 제거됨
     part1_lines = []
-    if date_str:
-        part1_lines.append(_p(_bold(date_str), align="center"))
-        part1_lines.append("<hr>")
+    if False:  # 날짜 블록 사용 안 함
+        pass
     for p in body_1_ps:
         part1_lines.append(_p(p))          # align=left 기본
     if source_url:
@@ -573,7 +572,7 @@ def format_for_stibee(
     hero_image_url = image_urls[0] if image_urls else ""
 
     html = build_tikkeul_html(
-        date_str=date_str or None,
+        date_str=None,  # 날짜 사용 안 함
         news_image_url="",
         body_paragraph_1=body_1_html,
         source_link_url=extracted_source_link_url,
