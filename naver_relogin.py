@@ -51,10 +51,10 @@ def _send_telegram_photo(path: str, caption: str):
     try:
         with open(path, "rb") as f:
             requests.post(
-                f"https://api.telegram.org/bot{BOT_TOKEN}/sendPhoto",
+                f"https://api.telegram.org/bot{BOT_TOKEN}/sendDocument",
                 data={"chat_id": CHAT_ID, "caption": caption},
-                files={"photo": f},
-                timeout=15,
+                files={"document": f},
+                timeout=30,
             )
     except Exception as e:
         print(f"  텔레그램 사진 전송 실패: {e}")
